@@ -3,9 +3,11 @@ package com.example.proyecto_inicial_aaron
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,11 +22,18 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.text2_hp).text = "$hp2/$vn2"
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(savedInstanceState!=null){
+            hp1=savedInstanceState.getInt("hp1")
+            hp2=savedInstanceState.getInt("hp2")
+            vn1=savedInstanceState.getInt("vn1")
+            vn2=savedInstanceState.getInt("vn2")
+            actualizar()
+        }
 
         findViewById<ImageButton>(R.id.btn1_hp_mas).setOnClickListener{
             hp1++
@@ -73,6 +82,25 @@ class MainActivity : AppCompatActivity() {
             actualizar()
         }
 
+        findViewById<FloatingActionButton>(R.id.reset).setOnClickListener{
+            hp1=25
+            hp2=25
+            vn1=0
+            vn2=0
+            actualizar()
+        }
+
+
+    }
+
+    @Override
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        outPersistentState.putInt("hp1",hp1)
+        outPersistentState.putInt("hp2",hp2)
+        outPersistentState.putInt("vn1",vn1)
+        outPersistentState.putInt("vn2",vn2)
+
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 
 }
